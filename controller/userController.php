@@ -34,6 +34,13 @@ class ControllerUsers{
                 );
                 echo json_encode($json,true);
                 return;
+            case 'PUT':
+                $updateUser = ModelUsers::updateUser($this->generateSalting()); 
+                $json = array(
+                    "response:"=>$updateUser
+                );
+                echo json_encode($json,true);
+                return;
             default :
                 $json = array(
                     "ruta:"=>"not found"
