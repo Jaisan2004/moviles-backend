@@ -1,14 +1,12 @@
 <?php
 require_once "controller/routesControler.php";
 require_once "controller/userController.php";
-require_once "controller/visitaController.php";
 require_once "controller/vehiculoController.php";
 require_once "controller/loginController.php";
 require_once "controller/lugarController.php";
 require_once "controller/reservaController.php";
 require_once "model/usersModel.php";
 require_once "model/reservaModel.php";
-require_once "model/visitaModel.php";
 require_once "model/vehiculoModel.php";
 require_once "model/lugarModel.php";
 
@@ -31,7 +29,7 @@ $rutasArray = explode("/", $_SERVER['REQUEST_URI']);
 $endPoint = (array_filter($rutasArray)[2]);
 
 
-if ($endPoint!='login'){
+if ($endPoint!='login'&& $endPoint!='users'){
     if(isset($_SERVER['PHP_AUTH_USER']) && (isset($_SERVER['PHP_AUTH_PW']))){
         $ok = false;
         $identifier = $_SERVER['PHP_AUTH_USER'];
