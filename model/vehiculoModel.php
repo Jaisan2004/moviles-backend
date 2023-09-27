@@ -1,4 +1,6 @@
 <?php
+echo "hola";
+
 require_once "ConDB.php";
 class ModelVehiculo{
 
