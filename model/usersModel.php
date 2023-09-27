@@ -8,8 +8,8 @@ class ModelUsers{
         $cantCedu=self::getUsuario($data["usu_usuario"]);
         if ($cantusu_mail==0){
             if ($cantCedu == 0){               
-                $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key);";            
-                $status=1;
+                $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key, usu_estado) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key, :usu_estado);";            
+                $status="1";
                 $statement  = Connection::conecction()->prepare($query);
                 $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_apellido", $data["usu_apellido"],PDO::PARAM_STR);
@@ -18,7 +18,8 @@ class ModelUsers{
                 $statement->bindParam(":usu_usuario", $data["usu_usuario"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_password", $data["usu_password"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_identifier", $data["usu_identifier"],PDO::PARAM_STR);
-                $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);      
+                $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);   
+                $statement->bindParam(":usu_estado", $status,PDO::PARAM_STR);   
                 $mesage = $statement->execute() ? "ok" : Connection::conecction()->errorInfo();
                 $statement->closeCursor();
                 $statement= null;
@@ -65,33 +66,33 @@ class ModelUsers{
     //        return $result;
     // }
 
-    // static public function login($data){
-    //    //print_r($data);
-    //     $user = $data['usu_usu_mail'];
-    //     $pss = ($data['usu_contra']);
-    //     //echo $pss;
+    static public function login($data){
+       //print_r($data);
+        $user = $data['usu_usu_mail'];
+        $pss = ($data['usu_contra']);
+        //echo $pss;
 
-    //     if(!empty($user) && !empty($pss)){
-    //         $query="SELECT usu_usu_identifier, usu_key, usu_id  FROM usu_usuario WHERE usu_usu_mail='$user' and usu_contra='$pss'";
-    //        // echo $query;
-    //         $statement  = Connection::conecction()->prepare($query);
-    //         $statement->execute();
-    //         $result=$statement->fetchAll(PDO::FETCH_ASSOC); 
-    //         return $result;
-    //     }else{
-    //         throw new Exception(LOGIN_FIELDS_MISSING);
-    //     }
+        if(!empty($user) && !empty($pss)){
+            $query="SELECT usu_usu_identifier, usu_key, usu_id  FROM usu_usuario WHERE usu_usu_mail='$user' and usu_contra='$pss'";
+           // echo $query;
+            $statement  = Connection::conecction()->prepare($query);
+            $statement->execute();
+            $result=$statement->fetchAll(PDO::FETCH_ASSOC); 
+            return $result;
+        }else{
+            throw new Exception(LOGIN_FIELDS_MISSING);
+        }
 
-    // }
+    }
 
-    // static public function getUsersAuth(){        
-    //     $query="";
-    //     $query= "SELECT usu_usu_identifier, usu_key, usu_id FROM usu_usuario WHERE usu_status ='1';" ;
-    //     $statement  = Connection::conecction()->prepare($query);
-    //     $statement->execute();
-    //     $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
-    //     return $result;
-    // }
+    static public function getUsersAuth(){        
+        $query="";
+        $query= "SELECT usu_identifier, usu_key, usu_id FROM usuario WHERE usu_estado ='1';" ;
+        $statement  = Connection::conecction()->prepare($query);
+        $statement->execute();
+        $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
+        return $result;
+    }
 
 }
 ?>
