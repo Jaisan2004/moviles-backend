@@ -1,6 +1,5 @@
 <?php
 require_once "ConDB.php";
-require_once "eventoModel.php";
 class ModelVisita{
 
     static public function postVisita($data){   

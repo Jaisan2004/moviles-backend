@@ -3,8 +3,8 @@ require_once "ConDB.php";
 class ModelVehiculo{
 
     static public function createVehiculo($data){   
-        $cantPlaca = self::getVehiculosPlaca($data["veh_placa"], 0);
-        $cantUsuario = self::getVehiculosUsuario($data["usu_id"], 0);
+        $cantPlaca = self::verifVehiculosPlaca($data["veh_placa"], 0);
+        $cantUsuario = self::verifVehiculosUsuario($data["usu_id"], 0);
         if($cantPlaca==0){
             if($cantUsuario==0){
                 $query = "INSERT INTO vehiculo values('',:veh_marca,:veh_color,:veh_modelo,:veh_placa,:veh_foto, :usu_id)";
@@ -27,8 +27,8 @@ class ModelVehiculo{
     }
 
     static public function updateVehiculo($data){   
-        $cantPlaca = self::getVehiculosPlaca($data["veh_placa"], $data["veh_id"]);
-        $cantUsuario = self::getVehiculosUsuario($data["usu_id"], $data["veh_id"]);
+        $cantPlaca = self::verifVehiculosPlaca($data["veh_placa"], $data["veh_id"]);
+        $cantUsuario = self::verifVehiculosUsuario($data["usu_id"], $data["veh_id"]);
         if($cantPlaca==0){
             if($cantUsuario==0){
                 $query = "UPDATE vehiculo set veh_marca= :veh_marca, veh_color= :veh_color, veh_modelo= :veh_modelo,veh_placa=:veh_placa,veh_foto=:veh_foto WHERE veh_id= :veh_id;";
@@ -60,10 +60,16 @@ class ModelVehiculo{
     }
 
 
-    static public function getVehiculos(){
-        return "todo";
+    static public function getVehiculos($data){
+        $query = "SELECT * FROM vehiculo WHERE veh_id= :veh_id;";
+        $statement  = Connection::conecction()->prepare($query);
+        $statement->bindParam(":veh_id",  $data["veh_id"],PDO::PARAM_STR);
+        $statement->execute();
+        $result=$statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
     } 
-    static public function getVehiculosPlaca($placa, $id){
+    static public function verifVehiculosPlaca($placa, $id){
         $query ="SELECT veh_placa, usu_id        
         FROM vehiculo
         WHERE veh_placa = '$placa'";
@@ -73,7 +79,7 @@ class ModelVehiculo{
           $result=$statement->rowCount();         
           return $result;
     } 
-    static public function getVehiculosUsuario($usu_id, $id){
+    static public function verifVehiculosUsuario($usu_id, $id){
         $query ="SELECT usu_id
         FROM vehiculo
         WHERE usu_id = '$usu_id'";
