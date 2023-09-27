@@ -47,14 +47,14 @@ if(count(array_filter($rutasArray))<2) { //array_filter quita los indices vacío
                 $lugar = new ControllerLugar($method,$complement,$_POST);
             else
                 $lugar = new ControllerLugar($method,$complement,0);   
-           $lugar->index();
+                $lugar->index();
             break;
-        case 'salida':
+        case 'reserva':            
             if (isset($_POST))            
-                $salida = new ControllerSalida($method,$complement,$_POST);
+                $lugar = new ControllerReserva($method,$complement,$_POST);
             else
-                $salida = new ControllerSalida($method,$complement,0);   
-           $salida->index();
+                $lugar = new ControllerReserva($method,$complement,0);   
+                $lugar->index();
             break;
         case 'vehiculo':            
             if (isset($_POST))            
