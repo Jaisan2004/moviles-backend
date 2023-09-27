@@ -41,6 +41,13 @@ class ControllerUsers{
                 );
                 echo json_encode($json,true);
                 return;
+            case 'DELETE':
+                $deleteUser = ModelUsers::deleteUser($this->_data); 
+                $json = array(
+                    "response:"=>$deleteUser
+                );
+                echo json_encode($json,true);
+                return;
             default :
                 $json = array(
                     "ruta:"=>"not found"

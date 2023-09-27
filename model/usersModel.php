@@ -20,7 +20,7 @@ class ModelUsers{
                 $statement->bindParam(":usu_identifier", $data["usu_identifier"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);   
                 $statement->bindParam(":usu_estado", $status,PDO::PARAM_STR);   
-                $mesage = $statement->execute() ? "ok" : Connection::conecction()->errorInfo();
+                $mesage = $statement->execute() ? "todo ok, se creo el usuario" : Connection::conecction()->errorInfo();
                 $statement->closeCursor();
                 $statement= null;
                 $query = "";
@@ -53,7 +53,7 @@ class ModelUsers{
                 $statement->bindParam(":usu_identifier", $data["usu_identifier"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);   
                 $statement->bindParam(":usu_id", $data["usu_id"],PDO::PARAM_STR);  
-                $mesage = $statement->execute() ? "ok" : Connection::conecction()->errorInfo();
+                $mesage = $statement->execute() ? "ok, se actualizo el usuario" : Connection::conecction()->errorInfo();
                 $statement->closeCursor();
                 $statement= null;
                 $query = "";
@@ -69,6 +69,17 @@ class ModelUsers{
         return $mesage; 
     }
 
+    static public function deleteUser($data){                 
+        $query= "UPDATE usuario SET usu_estado= '0' WHERE usu_id= :usu_id;";
+        $statement  = Connection::conecction()->prepare($query);
+        $statement->bindParam(":usu_id", $data["usu_id"],PDO::PARAM_STR); 
+        $mesage = $statement->execute() ? "ok, usuario desactivado" : Connection::conecction()->errorInfo();
+        $statement->closeCursor();
+        $statement= null;
+        $query = "";
+
+        return $mesage;
+    }
 
     static private function getusu_mail($correo, $id){
         $query="SELECT usu_mail FROM usuario WHERE usu_mail='$correo'";
