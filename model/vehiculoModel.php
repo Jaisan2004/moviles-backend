@@ -3,7 +3,7 @@ require_once "ConDB.php";
 class ModelVehiculo{
 
     static public function postVehiculo($data){   
-            $query = "insert into visitante values('',?,?,?,?,?)";
+            $query = "INSERT INTO vehiculo values('',:veh_marca,:veh_color,:veh_modelo,:veh_placa,:veh_foto, :usu_id)";
             $statement  = Connection::conecction()->prepare($query);
             if ($statement->execute([
                 $data['veh_tipo'],
