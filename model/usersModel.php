@@ -8,11 +8,12 @@ class ModelUsers{
         $cantCedu=self::getUsuario($data["usu_usuario"], 0);
         if ($cantusu_mail==0){
             if ($cantCedu == 0){               
-                $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key, usu_estado) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key, :usu_estado);";            
+                $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_edad, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key, usu_estado) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_edad, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key, :usu_estado);";            
                 $status="1";
                 $statement  = Connection::conecction()->prepare($query);
                 $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_apellido", $data["usu_apellido"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_edad", $data["usu_edad"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_cedula", $data["usu_cedula"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_mail",  $data["usu_mail"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_usuario", $data["usu_usuario"],PDO::PARAM_STR);
@@ -42,10 +43,11 @@ class ModelUsers{
         $cantCedu=self::getUsuario($data["usu_usuario"], $data["usu_id"]);
         if ($cantusu_mail==0){
             if ($cantCedu == 0){               
-                $query= "UPDATE usuario SET usu_nombre= :usu_nombre, usu_apellido= :usu_apellido, usu_cedula= :usu_cedula, usu_mail= :usu_mail, usu_usuario= :usu_usuario, usu_password= :usu_password, usu_identifier= :usu_identifier, usu_key= :usu_key WHERE usu_id= :usu_id;";
+                $query= "UPDATE usuario SET usu_nombre= :usu_nombre, usu_apellido= :usu_apellido, usu_edad= :usu_edad, usu_cedula= :usu_cedula, usu_mail= :usu_mail, usu_usuario= :usu_usuario, usu_password= :usu_password, usu_identifier= :usu_identifier, usu_key= :usu_key WHERE usu_id= :usu_id;";
                 $statement  = Connection::conecction()->prepare($query);
                 $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_apellido", $data["usu_apellido"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_edad", $data["usu_edad"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_cedula", $data["usu_cedula"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_mail",  $data["usu_mail"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_usuario", $data["usu_usuario"],PDO::PARAM_STR);
