@@ -45,14 +45,14 @@ class ControllerUsers{
     }
     private function generateSalting(){
         $trimmed_data="";
+        
         if (($this->_data != "") || (!empty($this->_data))){
             $trimmed_data = array_map('trim', $this->_data);               
-            $trimmed_data['usu_contra'] = md5($trimmed_data['usu_contra']);          
-            $identifier = str_replace("$","asd",crypt($trimmed_data["usu_usuario"].$trimmed_data["usu_mail"],'$1$aserwtop$'));
-            $key = str_replace("$","ERT",crypt($trimmed_data["usu_mail"].$trimmed_data["usu_usuario"],'$1$aserwtops9921jkadfjk$'));
+            $trimmed_data['usu_contraseña'] = md5($trimmed_data['usu_contraseña']);          
+            $identifier = str_replace("$","asd",crypt($trimmed_data["usu_cedula"].$trimmed_data["usu_correo_electronico"],'$1$aserwtop$'));
+            $key = str_replace("$","ERT",crypt($trimmed_data["usu_correo_electronico"].$trimmed_data["usu_cedula"],'$1$aserwtops9921jkadfjk$'));
             $trimmed_data['usu_identifier']=$identifier;
             $trimmed_data['usu_key']=$key;            
-            $trimmed_data['usu_dateUpdate']= date("Y-m-d h:i");
             //echo gettype($trimmed_data);
             //print_r($identifier);
             //print_r($trimmed_data);

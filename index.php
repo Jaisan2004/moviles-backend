@@ -27,8 +27,10 @@ list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) =
 $rutasArray = explode("/", $_SERVER['REQUEST_URI']);
 $endPoint = (array_filter($rutasArray)[2]);
 
+$routes = new RoutesController();
+$routes->index();
 
-if ($endPoint!='login'){
+/*if ($endPoint!='login'){
     if(isset($_SERVER['PHP_AUTH_USER']) && (isset($_SERVER['PHP_AUTH_PW']))){
         $ok = false;
         $identifier = $_SERVER['PHP_AUTH_USER'];
@@ -57,5 +59,5 @@ if ($endPoint!='login'){
 }else{
     $routes = new RoutesController();
     $routes->index();
-}
+}*/
 ?>
