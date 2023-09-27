@@ -4,28 +4,27 @@ class ModelUsers{
 
     static public function createUser($data){   
        
-        $cantMail=self::getMail($data["usu_correo_electronico"]);
-        $cantCedu=self::getCedula($data["usu_cedula"]);
-        if ($cantMail==0){
+        $cantusu_mail=self::getusu_mail($data["usu_mail"]);
+        $cantCedu=self::getUsuario($data["usu_usuario"]);
+        if ($cantusu_mail==0){
             if ($cantCedu == 0){               
-                $query= "INSERT INTO usuario (`usu_cedula`, `usu_nombre`, `usu_apellido`, `usu_edad`, `usu_fecha_nacimiento`, `usu_correo_electronico`, `usu_contraseña`, `usu_identifier`, `usu_key`, `usu_estatus`)
-                 VALUES (:usu_cedula, :usu_nombre, :usu_apellido, :usu_edad, :usu_fecha_nacimiento, :usu_correo_electronico, :usu_contraseña, :usu_identifier, :usu_key, :usu_estatus);";            
+                $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key);";            
                 $status=1;
                 $statement  = Connection::conecction()->prepare($query);
-                $statement->bindParam(":usu_cedula", ($data["usu_cedula"]),PDO::PARAM_INT);
-                $statement->bindParam(":usu_nombre", ($data["usu_nombre"]),PDO::PARAM_STR);
-                $statement->bindParam(":usu_apellido",  ($data["usu_apellido"]),PDO::PARAM_STR);
-                $statement->bindParam(":usu_edad", $data["usu_edad"],PDO::PARAM_INT);
-                $statement->bindParam(":usu_fecha_nacimiento", $data["usu_fecha_nacimiento"],PDO::PARAM_STR);
-                $statement->bindParam(":usu_correo_electronico", $data["usu_correo_electronico"],PDO::PARAM_STR);
-                $statement->bindParam(":usu_contraseña", $data["usu_contraseña"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_apellido", $data["usu_apellido"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_cedula", $data["usu_cedula"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_mail",  $data["usu_mail"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_usuario", $data["usu_usuario"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_password", $data["usu_password"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_identifier", $data["usu_identifier"],PDO::PARAM_STR);
-                $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);       
-                $statement->bindParam(":usu_estatus", $status, PDO::PARAM_INT); 
+                $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);      
                 $mesage = $statement->execute() ? "ok" : Connection::conecction()->errorInfo();
                 $statement->closeCursor();
                 $statement= null;
                 $query = "";
+
+                
                
             }else{
                 $mesage ="La Cedula ya fue ingresada";
@@ -36,15 +35,15 @@ class ModelUsers{
         return $mesage; 
     }
 
-    static private function getMail($correo){
-        $query="SELECT usu_correo_electronico FROM usuario WHERE usu_correo_electronico='$correo'";        
+    static private function getusu_mail($correo){
+        $query="SELECT usu_mail FROM usuario WHERE usu_mail='$correo'";        
         $statement  = Connection::conecction()->prepare($query);
           $statement->execute();
           $result=$statement->rowCount();               
           return $result;
     }
-    static private function getCedula($cedula){
-        $query="SELECT usu_cedula FROM usuario WHERE usu_cedula='$cedula'";        
+    static private function getUsuario($usu_usuario){
+        $query="SELECT usu_usuario FROM usuario WHERE usu_usuario='$usu_usuario'";        
         $statement  = Connection::conecction()->prepare($query);
           $statement->execute();
           $result=$statement->rowCount();               
@@ -53,11 +52,11 @@ class ModelUsers{
 
     // static public function getUsers($param){
     //     $param =  is_numeric($param) ? $param : 0;
-    //     $query ="SELECT usuario.usu_id, usuario.usu_usuario, usuario.usu_mail, usuario.rol_id, usu_dateUpdate,
+    //     $query ="SELECT usu_usuario.usu_id, usu_usuario.usu_usu_usuario, usu_usuario.usu_usu_mail, usu_usuario.rol_id, usu_dateUpdate,
     //     rol.rol_id, rol.rol_descripcion
-    //     FROM usuario
-    //     INNER JOIN rol ON usuario.rol_id = rol.rol_id";
-    //      $query .= ($param > 0) ? " WHERE usuario.usu_id ='$param' AND " : "";
+    //     FROM usu_usuario
+    //     INNER JOIN rol ON usu_usuario.rol_id = rol.rol_id";
+    //      $query .= ($param > 0) ? " WHERE usu_usuario.usu_id ='$param' AND " : "";
     //      $query .= ($param > 0) ? " usu_status ='1';" : " and usu_status ='1';";
     //      //echo $query;
     //       $statement  = Connection::conecction()->prepare($query);
@@ -68,12 +67,12 @@ class ModelUsers{
 
     // static public function login($data){
     //    //print_r($data);
-    //     $user = $data['usu_mail'];
+    //     $user = $data['usu_usu_mail'];
     //     $pss = ($data['usu_contra']);
     //     //echo $pss;
 
     //     if(!empty($user) && !empty($pss)){
-    //         $query="SELECT usu_identifier, usu_key, usu_id  FROM usuario WHERE usu_mail='$user' and usu_contra='$pss'";
+    //         $query="SELECT usu_usu_identifier, usu_key, usu_id  FROM usu_usuario WHERE usu_usu_mail='$user' and usu_contra='$pss'";
     //        // echo $query;
     //         $statement  = Connection::conecction()->prepare($query);
     //         $statement->execute();
@@ -87,7 +86,7 @@ class ModelUsers{
 
     // static public function getUsersAuth(){        
     //     $query="";
-    //     $query= "SELECT usu_identifier, usu_key, usu_id FROM usuario WHERE usu_status ='1';" ;
+    //     $query= "SELECT usu_usu_identifier, usu_key, usu_id FROM usu_usuario WHERE usu_status ='1';" ;
     //     $statement  = Connection::conecction()->prepare($query);
     //     $statement->execute();
     //     $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
