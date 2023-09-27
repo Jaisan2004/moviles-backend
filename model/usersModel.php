@@ -114,12 +114,12 @@ class ModelUsers{
 
     static public function login($data){
        //print_r($data);
-        $user = $data['usu_usu_mail'];
-        $pss = ($data['usu_contra']);
+        $user = $data['usu_mail'];
+        $pss = ($data['usu_password']);
         //echo $pss;
 
         if(!empty($user) && !empty($pss)){
-            $query="SELECT usu_usu_identifier, usu_key, usu_id  FROM usu_usuario WHERE usu_usu_mail='$user' and usu_contra='$pss'";
+            $query="SELECT usu_identifier, usu_key, usu_id  FROM usuario WHERE usu_mail='$user' and usu_password='$pss'";
            // echo $query;
             $statement  = Connection::conecction()->prepare($query);
             $statement->execute();
