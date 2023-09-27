@@ -2,55 +2,85 @@
 require_once "ConDB.php";
 class ModelVehiculo{
 
-    static public function postVehiculo($data){   
-            $query = "INSERT INTO vehiculo values('',:veh_marca,:veh_color,:veh_modelo,:veh_placa,:veh_foto, :usu_id)";
-            $statement  = Connection::conecction()->prepare($query);
-            if ($statement->execute([
-                $data['veh_tipo'],
-                $data['veh_placa'],
-                $data['veh_parqueo'],
-                $data['veh_foto'],
-                $data['vis_id']                          
-            ])){                
-                    return "ok";
-                
+    static public function createVehiculo($data){   
+        $cantPlaca = self::getVehiculosPlaca($data["veh_placa"], 0);
+        $cantUsuario = self::getVehiculosUsuario($data["usu_id"], 0);
+        if($cantPlaca==0){
+            if($cantUsuario==0){
+                $query = "INSERT INTO vehiculo values('',:veh_marca,:veh_color,:veh_modelo,:veh_placa,:veh_foto, :usu_id)";
+                $statement  = Connection::conecction()->prepare($query);
+                $statement->bindParam(":veh_marca", $data["veh_marca"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_color", $data["veh_color"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_modelo", $data["veh_modelo"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_placa", $data["veh_placa"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_foto",  $data["veh_foto"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_id", $data["usu_id"],PDO::PARAM_STR); 
+                $mesage = $statement->execute() ? "todo ok, se creo el vehiculo" : Connection::conecction()->errorInfo();
+                $statement->closeCursor();
             }else{
-                return Conecction::conecction()->errorInfo();
-            }   
+                $mesage = "Solo se puede crear un vehiculo por cuenta";
+            }
+        }else{
+            $mesage = "Ya se ha registrado un vehiculo con esta placa";
+        }  
+        return $mesage;
     }
+
+    static public function updateVehiculo($data){   
+        $cantPlaca = self::getVehiculosPlaca($data["veh_placa"], $data["veh_id"]);
+        $cantUsuario = self::getVehiculosUsuario($data["usu_id"], $data["veh_id"]);
+        if($cantPlaca==0){
+            if($cantUsuario==0){
+                $query = "UPDATE vehiculo set veh_marca= :veh_marca, veh_color= :veh_color, veh_modelo= :veh_modelo,veh_placa=:veh_placa,veh_foto=:veh_foto WHERE veh_id= :veh_id;";
+                $statement  = Connection::conecction()->prepare($query);
+                $statement->bindParam(":veh_marca", $data["veh_marca"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_color", $data["veh_color"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_modelo", $data["veh_modelo"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_placa", $data["veh_placa"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_foto",  $data["veh_foto"],PDO::PARAM_STR);
+                $statement->bindParam(":veh_id",  $data["veh_id"],PDO::PARAM_STR);
+                $mesage = $statement->execute() ? "todo ok, se modifico el vehiculo" : Connection::conecction()->errorInfo();
+                $statement->closeCursor();
+            }
+        }else{
+            $mesage = "Ya se ha registrado un vehiculo con esta placa";
+        }  
+        return $mesage;
+    }
+
+    static public function deleteVehiculo($data){   
+
+        $query = "DELETE FROM vehiculo WHERE veh_id= :veh_id;";
+        $statement  = Connection::conecction()->prepare($query);
+        $statement->bindParam(":veh_id",  $data["veh_id"],PDO::PARAM_STR);
+        $mesage = $statement->execute() ? "se elimino el carro" : Connection::conecction()->errorInfo();
+        $statement->closeCursor();
+
+        return $mesage;
+    }
+
 
     static public function getVehiculos(){
         return "todo";
     } 
-    static public function getVehiculosPlaca($placa){
-        $query ="SELECT vehiculo.veh_id, vehiculo.veh_tipo, vehiculo.veh_placa, vehiculo.veh_parqueo, vehiculo.veh_foto,
-        vehiculo.vis_id
+    static public function getVehiculosPlaca($placa, $id){
+        $query ="SELECT veh_placa, usu_id        
         FROM vehiculo
-        WHERE vehiculo.veh_placa = '$placa';";
+        WHERE veh_placa = '$placa'";
+        $query .= ($id > 0) ? " AND veh_id <>'$id';" : ";";
           $statement  = Connection::conecction()->prepare($query);
           $statement->execute();
-          $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
+          $result=$statement->rowCount();         
           return $result;
     } 
-    static public function getVehiculosVisitante($idVisitante){
-        $query ="SELECT vehiculo.veh_id, vehiculo.veh_tipo, vehiculo.veh_placa, vehiculo.veh_parqueo, vehiculo.veh_foto,
-        vehiculo.vis_id
+    static public function getVehiculosUsuario($usu_id, $id){
+        $query ="SELECT usu_id
         FROM vehiculo
-        WHERE vehiculo.vis_id = '$idVisitante';";
+        WHERE usu_id = '$usu_id'";
+        $query .= ($id > 0) ? " AND veh_id <>'$id';" : ";";
           $statement  = Connection::conecction()->prepare($query);
           $statement->execute();
-          $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
-          return $result;
-        
-    } 
-    static public function getVehiculosUsuario($idUsuario){
-        $query ="SELECT vehiculo.veh_id, vehiculo.veh_tipo, vehiculo.veh_placa, vehiculo.veh_parqueo, vehiculo.veh_foto,
-        vehiculo.vis_id
-        FROM vehiculo
-        WHERE vehiculo.vis_id = '$idUsuario';";
-          $statement  = Connection::conecction()->prepare($query);
-          $statement->execute();
-          $result=$statement->fetchAll(PDO::FETCH_ASSOC);         
+          $result=$statement->rowCount();
           return $result;
         
     } 

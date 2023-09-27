@@ -41,7 +41,21 @@ class ControllerVehiculo{
                         return;                   
                 }   
             case 'POST':               
-                $vehiculo = ModelVehiculo::postVehiculo($this->_data);
+                $vehiculo = ModelVehiculo::createVehiculo($this->_data);
+                $json = array(
+                    "response:"=>$vehiculo
+                );
+                echo json_encode($json,true);
+                return;
+            case 'PUT':               
+                $vehiculo = ModelVehiculo::updateVehiculo($this->_data);
+                $json = array(
+                    "response:"=>$vehiculo
+                );
+                echo json_encode($json,true);
+                return;
+            case 'DELETE':               
+                $vehiculo = ModelVehiculo::deleteVehiculo($this->_data);
                 $json = array(
                     "response:"=>$vehiculo
                 );
