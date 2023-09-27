@@ -11,6 +11,7 @@ class ModelUsers{
                 $query= "INSERT INTO usuario (usu_id, usu_nombre, usu_apellido, usu_edad, usu_cedula, usu_mail, usu_usuario, usu_password, usu_identifier, usu_key, usu_estado) VALUES (NULL, :usu_nombre, :usu_apellido, :usu_edad, :usu_cedula, :usu_mail, :usu_usuario, :usu_password, :usu_identifier, :usu_key, :usu_estado);";            
                 $status="1";
                 $statement  = Connection::conecction()->prepare($query);
+<<<<<<< Updated upstream
                 $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_apellido", $data["usu_apellido"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_edad", $data["usu_edad"],PDO::PARAM_STR);
@@ -18,6 +19,15 @@ class ModelUsers{
                 $statement->bindParam(":usu_mail",  $data["usu_mail"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_usuario", $data["usu_usuario"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_password", $data["usu_password"],PDO::PARAM_STR);
+=======
+                $statement->bindParam(":usu_cedula", $data["usu_cedula"],PDO::PARAM_INT);
+                $statement->bindParam(":usu_nombre", $data["usu_nombre"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_apellido",  $data["usu_apellido"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_edad", $data["usu_edad"],PDO::PARAM_INT);
+                $statement->bindParam(":usu_fecha_nacimiento", $data["usu_fecha_nacimiento"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_correo_electronico", $data["usu_correo_electronico"],PDO::PARAM_STR);
+                $statement->bindParam(":usu_contraseña", $data["usu_contraseña"],PDO::PARAM_STR);
+>>>>>>> Stashed changes
                 $statement->bindParam(":usu_identifier", $data["usu_identifier"],PDO::PARAM_STR);
                 $statement->bindParam(":usu_key", $data["usu_key"],PDO::PARAM_STR);   
                 $statement->bindParam(":usu_estado", $status,PDO::PARAM_STR);   
